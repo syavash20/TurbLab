@@ -29,14 +29,13 @@ Application
 
 Description
     Calculates and reports boundary-layer integral thickness 
-	including theta (momentun thickness) and deltaStar (displacement thickness).
+    including theta (momentun thickness) and deltaStar (displacement thickness).
 	
-	The streamwise and spanwise directions of the flow must be X and Z, respectively.
-	A time-averaged velocity field (Uvec) is required for the code to work.	
-	This code has been developed for a fully hexahedral mesh but it may work for a non-hex mesh either.
+     The streamwise and spanwise directions of the flow must be X and Z, respectively.
+     A time-averaged velocity field (Uvec) is required for the code to work.	
+     This code has been developed for a fully hexahedral mesh but it may work for a non-hex mesh either.
 	
-
-	Ehsan Asgari (syavash20), e.asgari@aut.ac.ir	
+     Ehsan Asgari (syavash20), e.asgari@aut.ac.ir	
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"

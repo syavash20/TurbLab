@@ -135,12 +135,7 @@ forAll(mesh.boundary(), patchID)
                {
                theta.boundaryField()[patchID][facei]=theta.boundaryField()[patchID][faceii];
                deltaStar.boundaryField()[patchID][facei]=deltaStar.boundaryField()[patchID][faceii];
-               flag = 1;
-// Info<< "xGlobal " << xGlobal[facei]
-//     << " zCor " << zCor
-//     << " facei " << faceii
-//     << " xCor " << xCor << nl << endl;
-              
+               flag = 1;              
                break;              
                }
                }
@@ -159,14 +154,6 @@ forAll(mesh.boundary(), patchID)
               }
                xGlobal[facei] = xCor;       
               }
-
-//if (facei == 63)
-//{
-//Info << " facei " << facei
-//     << "flag" << flag
-//     << " xCor " << xCor << nl << endl;
-//}
-
               }
                                         
             }

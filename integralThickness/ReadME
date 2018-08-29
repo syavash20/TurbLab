@@ -1,0 +1,5 @@
+Calculate integral thicknesses including theta and deltaStar for a developing boundary-layer over a flat plate.
+
+This tool has been developed for OpenFOAM 2.3.1.
+
+Ehsan Asgari

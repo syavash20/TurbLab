@@ -18,3 +18,8 @@ turbDiffMean
 SGSDiffMean
 
 If any of the above fields would not exist, the utility will be terminated. So make sure to activate averaging process for them in the fieldAverage function object within controlDict. It is recommended to add all the defined variables in the main solver to the function object.
+
+If you would like to use the solver in your work, please cite the following publication of our lab:
+
+Asgari, E., and Tadjfar, M., 2017, “Assessment of Four Inﬂow Conditions on Large-Eddy Simulation of a Gently Curved Backward-Facing Step,” J. Turbul.,
+18(1), pp. 61–86.

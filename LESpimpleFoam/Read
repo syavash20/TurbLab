@@ -1,0 +1,20 @@
+
+It is the solver plus an essential utility to calculate budgests of the mean turbulent kinetic energy equation. I have added some comments to the main solver which should make it easy to understand the terms of TKE budgets.
+
+Both solver and utility (postLES) have been compiled on OF 2.3.1. Only some important notes remain:
+
+1-This implementation requires a well established averaged Velocity field (UMean) to exist in the time folder. The process of averaging of TKE budgets happens within the main solver and UMean is NOT updated within the code. So a reasonable averaged field must exist prior to beginning of simulation using LESpimpleFoam. To provide this averaged field, one can perform simulation for several flow-through time using the native pimpleFoam solver.
+
+2-Three of TKE budgets are calculated afterwards the simulation through the postLES utilitiy provided. This utility requires averaged fields, including:
+
+UMean
+
+kMean
+
+UPrime2Mean
+
+turbDiffMean
+
+SGSDiffMean
+
+If any of the above fields would not exist, the utility will be terminated. So make sure to activate averaging process for them in the fieldAverage function object within controlDict. It is recommended to add all the defined variables in the main solver to the function object.

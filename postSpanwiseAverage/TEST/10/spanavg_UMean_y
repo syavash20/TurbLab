@@ -1,0 +1,85 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.1.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "10";
+    object      spanavg_UMean_y;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   nonuniform List<scalar>
+30
+(
+0.333333
+0.666667
+1
+1.33333
+1.66667
+2
+2.33333
+2.66667
+3
+3.33333
+0.333333
+0.666667
+1
+1.33333
+1.66667
+2
+2.33333
+2.66667
+3
+3.33333
+0.333333
+0.666667
+1
+1.33333
+1.66667
+2
+2.33333
+2.66667
+3
+3.33333
+)
+;
+
+boundaryField
+{
+    perio_x_half0
+    {
+        type            cyclic;
+    }
+    perio_x_half1
+    {
+        type            cyclic;
+    }
+    perio_y_half0
+    {
+        type            cyclic;
+    }
+    perio_y_half1
+    {
+        type            cyclic;
+    }
+    perio_z_half0
+    {
+        type            cyclic;
+    }
+    perio_z_half1
+    {
+        type            cyclic;
+    }
+}
+
+
+// ************************************************************************* //

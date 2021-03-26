@@ -1,0 +1,15 @@
+I have created a modified version of timeVaryingMappedFixedValue BC which is useful when the inflow data are to be read using a loop-fashion.
+
+Imagine there are 5 sampled time values:
+
+0
+0.001
+0.002
+0.003
+0.004
+
+Simulations typically start from 0 and proceed in time. In the original timeVaryingMappedFixedValue BC, if the physical time goes beyond the time 0.004, the inflow data thereafter would be read from the time instant of 0.004 alone. However, in many simulations, particularly in scale-resolved approaches such as LES or DNS, it is not good to have a constant inflow data.
+An alternative would be to loop through the sampled times, which start from 0 in the example above. Of course, the original sampled data should provide a statistically converged solution in the first place.
+The modified version of the original BC, entitled "loopedTimeVaryingMappedFixedValue" is developed to loop through the sampled time instants when past a user-provided threshold (timeLimit). It will be also useful for saving computational cost, as substantially fewer time instants would be required to be generated in the precursor calculations (half, 1/3, 1/4, ...).
+
+The code has been written for OpenFOAM 2.3.0, but it will be straight forward to adapt it to the more recent versions of OpenFOAM.

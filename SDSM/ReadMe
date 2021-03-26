@@ -1,0 +1,6 @@
+I have developed a customized solver, STDPimpleFoam (Scalar Turbulent Diffusion pimpleFoam). It can solve an additional equation for a passive scalar. This is not something new by itself.
+However, I also developed an accompanying LES model, based on the dynamic Smagorinsky model, but with the ability to calculate the turbulent Schmidt number relying on the approach proposed by Lilly (1992). It is where things get interesting, the calculation of turbulent Schmidt number happens through a dynamic procedure, similar to what was employed in the dynamic Smagorinsky model for turbulent viscosity.
+
+I hope people will find it useful, as a proper implementation of scalar turbulent diffusion in OpenFOAM was lacking.
+
+The advantage of the developed LES model is that it does not demand modifying the turbulence models base classes (turbulenceModel, LESModel, etc...). So it should be easy to extrapolate the idea for developing other similar approaches.

@@ -1,0 +1,105 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  4.x                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      turbulenceProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+simulationType LES;
+
+LES
+{
+    LESModel        DTCSM; //dynamicSmagorinsky;
+
+    turbulence      on;
+
+    printCoeffs     on;
+
+    delta           cubeRootVol;
+
+    cubeRootVolCoeffs
+    {
+        deltaCoeff      1;
+    }
+
+    dynamicSmagorinskyCoeffs
+    {
+        filter simple;    
+    }
+
+    DTCSMCoeffs
+    {
+        filter simple;
+	couplingFactor 0.5;
+    }
+
+ 
+    PrandtlCoeffs
+    {
+        delta           cubeRootVol;
+        cubeRootVolCoeffs
+        {
+            deltaCoeff      1;
+        }
+
+        smoothCoeffs
+        {
+            delta           cubeRootVol;
+            cubeRootVolCoeffs
+            {
+                deltaCoeff      1;
+            }
+
+            maxDeltaRatio   1.1;
+        }
+
+        Cdelta          0.158;
+    }
+
+    vanDriestCoeffs
+    {
+        delta           cubeRootVol;
+        cubeRootVolCoeffs
+        {
+            deltaCoeff      1;
+        }
+
+        smoothCoeffs
+        {
+            delta           cubeRootVol;
+            cubeRootVolCoeffs
+            {
+                deltaCoeff      1;
+            }
+
+            maxDeltaRatio   1.1;
+        }
+
+        Aplus           26;
+        Cdelta          0.158;
+    }
+
+    smoothCoeffs
+    {
+        delta           cubeRootVol;
+        cubeRootVolCoeffs
+        {
+            deltaCoeff      1;
+        }
+
+        maxDeltaRatio   1.1;
+    }
+}
+
+
+// ************************************************************************* //

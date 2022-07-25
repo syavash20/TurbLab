@@ -42,7 +42,7 @@ namespace LESModels
 template<class BasicTurbulenceModel>
 void DTCSM<BasicTurbulenceModel>::correctNut()
 {
-    this->nut_ = 0.1 * Ck_*sqrt(this->k())*this->delta();
+    this->nut_ = Ck_*sqrt(mag(this->k()))*this->delta();
     this->nut_.correctBoundaryConditions();
     fv::options::New(this->mesh_).correct(this->nut_);
 
@@ -334,111 +334,13 @@ void DTCSM<BasicTurbulenceModel>::correct()
      C_M_.ref()[celli].component(tensor::ZZ) = RHS2[0];
 
 
-     R.ref()[celli] = -symm((C_M_.ref()[celli] & M[celli]) + (C_M_.ref()[celli] & M[celli]).T()) * sqrt(2.0) * mag(D[celli]);
+     R.ref()[celli] = -twoSymm((C_M_.ref()[celli] & D[celli])) * sqrt(2.0) * mag(D[celli]);
 
-	}
+     }
+    
 
-forAll (this->mesh_.boundaryMesh(), patchI)
-{
-    forAll(M.boundaryField()[patchI], faceI)
-    {
-
-     scalarRectangularMatrix A(6, 4, Zero);
-
-        A[0][0] = 2.0 * M.boundaryField()[patchI][faceI].component(symmTensor::XX);
-
-        A[0][1] = 2.0 * M.boundaryField()[patchI][faceI].component(symmTensor::XY);
-
-        A[0][2] = 2.0 * M.boundaryField()[patchI][faceI].component(symmTensor::XZ);
-
-        A[0][3] = 0.0;
-
-        A[1][0] = 2.0 * M.boundaryField()[patchI][faceI].component(symmTensor::YY);
-
-        A[1][1] = -2.0 * M.boundaryField()[patchI][faceI].component(symmTensor::XY);
-
-        A[1][2] = 0.0;
-
-        A[1][3] = 2.0 * M.boundaryField()[patchI][faceI].component(symmTensor::YZ);
-
-        A[2][0] = 2.0 * M.boundaryField()[patchI][faceI].component(symmTensor::ZZ);
-
-        A[2][1] = 0.0;
-
-        A[2][2] = -2.0 * M.boundaryField()[patchI][faceI].component(symmTensor::XZ);
-
-        A[2][3] = -2.0 * M.boundaryField()[patchI][faceI].component(symmTensor::YZ);
-
-        A[3][0] = 2.0 * M.boundaryField()[patchI][faceI].component(symmTensor::XY);
-
-        A[3][1] = M.boundaryField()[patchI][faceI].component(symmTensor::YY) - M.boundaryField()[patchI][faceI].component(symmTensor::XX);
-
-        A[3][2] = M.boundaryField()[patchI][faceI].component(symmTensor::YZ);
-
-        A[3][3] = M.boundaryField()[patchI][faceI].component(symmTensor::XZ);
-
-        A[4][0] = 2.0 * M.boundaryField()[patchI][faceI].component(symmTensor::XZ);
-
-        A[4][1] = M.boundaryField()[patchI][faceI].component(symmTensor::YZ);
-
-        A[4][2] = M.boundaryField()[patchI][faceI].component(symmTensor::ZZ) - M.boundaryField()[patchI][faceI].component(symmTensor::XX);
-
-        A[4][3] = -M.boundaryField()[patchI][faceI].component(symmTensor::XY);
-
-        A[5][0] = 2.0 * M.boundaryField()[patchI][faceI].component(symmTensor::YZ);
-
-        A[5][1] = -M.boundaryField()[patchI][faceI].component(symmTensor::XZ);
-
-        A[5][2] = -M.boundaryField()[patchI][faceI].component(symmTensor::XY);
-
-        A[5][3] = M.boundaryField()[patchI][faceI].component(symmTensor::ZZ) - M.boundaryField()[patchI][faceI].component(symmTensor::YY);
-
-
-     scalarRectangularMatrix Coeff(6, 1, 0);
-        Coeff[0][0] = L.boundaryField()[patchI][faceI].component(symmTensor::XX);
-
-        Coeff[1][0] = L.boundaryField()[patchI][faceI].component(symmTensor::YY);
-
-        Coeff[2][0] = L.boundaryField()[patchI][faceI].component(symmTensor::ZZ);
-
-        Coeff[3][0] = L.boundaryField()[patchI][faceI].component(symmTensor::XY);
-
-        Coeff[4][0] = L.boundaryField()[patchI][faceI].component(symmTensor::XZ);
-
-        Coeff[5][0] = L.boundaryField()[patchI][faceI].component(symmTensor::YZ);
-
-     scalarRectangularMatrix LHS(4, 4, Zero);
-     scalarRectangularMatrix RHS(4, 1, 0);
-
-	LHS = A.T() * A;
-
-     scalarSquareMatrix LHS2(LHS);
-	RHS = A.T() * Coeff;
-     scalarDiagonalMatrix RHS2(4, 0);
-     RHS2[0] = RHS[0][0];
-     RHS2[1] = RHS[1][0];
-     RHS2[2] = RHS[2][0];
-     RHS2[3] = RHS[3][0];
-
-        LUsolve(LHS2, RHS2);
-
-     C_M_.boundaryFieldRef()[patchI][faceI].component(tensor::XX) = RHS2[0];
-     C_M_.boundaryFieldRef()[patchI][faceI].component(tensor::XY) = RHS2[1];
-     C_M_.boundaryFieldRef()[patchI][faceI].component(tensor::XZ) = RHS2[2];
-     C_M_.boundaryFieldRef()[patchI][faceI].component(tensor::YX) = -RHS2[1];
-     C_M_.boundaryFieldRef()[patchI][faceI].component(tensor::YY) = RHS2[0];
-     C_M_.boundaryFieldRef()[patchI][faceI].component(tensor::YZ) = RHS2[3];
-     C_M_.boundaryFieldRef()[patchI][faceI].component(tensor::ZX) = -RHS2[2];
-     C_M_.boundaryFieldRef()[patchI][faceI].component(tensor::ZY) = -RHS2[3];
-     C_M_.boundaryFieldRef()[patchI][faceI].component(tensor::ZZ) = RHS2[0];
-
-
-     R.boundaryFieldRef()[patchI][faceI] = -symm((C_M_.boundaryFieldRef()[patchI][faceI] & M.boundaryFieldRef()[patchI][faceI]) + (C_M_.boundaryFieldRef()[patchI][faceI] & M.boundaryFieldRef()[patchI][faceI]).T()) * sqrt(2.0) * mag(D.boundaryField()[patchI][faceI]);
-
-    }
-}
 //    fvOptions.correct(R);
-    this->boundNormalStress(R);
+//    this->boundNormalStress(R);
 
     correctNut();
 }

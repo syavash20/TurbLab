@@ -234,7 +234,7 @@ void DTCSM<BasicTurbulenceModel>::correct()
     volSymmTensorField beta = sqrt(2.0) * mag(D) * D;
 
     volSymmTensorField L =
-        filter_(sqr(U)) - sqr(filter_(U));
+        -filter_(sqr(U)) + sqr(filter_(U));
 
    volSymmTensorField M
     (
